@@ -1,13 +1,14 @@
 import os
 import ydb
 # create driver in global space.
-drova = ydb.Driver(endpoint=os.getenv('YDB_ENDPOINT'), database=os.getenv('YDB_DATABASE'))
-# Wait for the driver to become active for requests.
-drova.wait(fail_fast=True, timeout=5)
+
 # Create the session pool instance to manage YDB sessions.
 pool = ydb.SessionPool(drova)
 #path = "user_state"
 def execute(query, params):
+    drova = ydb.Driver(endpoint=os.getenv('YDB_ENDPOINT'), database=os.getenv('YDB_DATABASE'))
+# Wait for the driver to become active for requests.
+    drova.wait(fail_fast=True, timeout=5)
     with drova as driver:
         try:
             driver.wait(timeout=5)
